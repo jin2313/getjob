@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{% load static %}
+
+{% block content %}
+
+<style>
+    body {
+        text-align: center;
+    }
+    .report-container {
+        display: inline-block;
+        width: 80%;
+        background-color: rgba(255, 255, 255, 0.3);
+        border-radius: 2rem;
+    }
+</style>
+
+{% for report in report_list %}
+    <div class="report-container my-5" style="text-align: left;">
+        <h2 class="my-4 mx-4">{{ report.0.report_num }}번 보고서</h2>
+        {% for result in report %}
+            {% if result.quest_id == '1' %}
+                <h3>1번입니다</h3>
+            {% else %}
+                <h3 class="mx-4">{{ result.quest_id }}번 문항</h3>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endfor %}
+
+{% endblock %}

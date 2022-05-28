@@ -13,18 +13,6 @@ from interviewapp.tasks import result
 
 
 
-# Create your views here.
-# def ThresView(request):
-#     if request.method == 'GET':
-#         return render(request, 'interviewapp/threshold.html')
-#     else:
-#         print(request.POST)
-#         global threshold
-#         threshold = int(request.POST['threshold'])
-#         return render(request, 'interviewapp/threshold.html')
-
-
-
 def QuestionView(request):
     if request.method == 'GET':
         corp_name = request.GET.get('corp', None)
@@ -99,12 +87,30 @@ def ReportView(request):
             max_count = max_result.count()
             if max_count < 7:
                 max_result.delete()
-            # result = Result.objects.filter(user_id=request.user)
             result = Result.objects.filter(user_id=request.user).order_by('report_num', 'quest_id')
+            report_list = []
+            for i in range(0, len(result), 7):
+                temp_list = []
+                for j in range(7):
+                    temp_list.append(result[i + j])
+                report_list.append(temp_list)
+            print(report_list)
             context = {
-                'result_list': result,
+                'report_list': report_list,
             }
-            return render(request, 'homeapp/home.html', context)
+            return render(request, 'interviewapp/report.html', context)
+
+
+
+# Create your views here.
+# def ThresView(request):
+#     if request.method == 'GET':
+#         return render(request, 'interviewapp/threshold.html')
+#     else:
+#         print(request.POST)
+#         global threshold
+#         threshold = int(request.POST['threshold'])
+#         return render(request, 'interviewapp/threshold.html')
 
 
 

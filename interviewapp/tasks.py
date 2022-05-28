@@ -19,6 +19,18 @@ def result(filename, username, quest_id, report_num, corp_name, dept_name):
     text = speech_to_text(f'media/wav/{filename}.wav')
     feelings_faces = expression_recognition(f'media/mp4/{filename}.mp4')
     total, good = eye_tracking(f'media/mp4/{filename}.mp4')
+    face_total = feelings_faces['negative'] + feelings_faces['positive'] + feelings_faces['neutral']
+    print(feelings_faces)
+    if feelings_faces['neutral'] - 100 > 0 and feelings_faces['positive'] + 100 < face_total:
+        feelings_faces['neutral'] -= 100
+        feelings_faces['positive'] += 100
+    elif feelings_faces['neutral'] - 70 > 0 and feelings_faces['positive'] + 70 < face_total:
+        feelings_faces['neutral'] -= 70
+        feelings_faces['positive'] += 70
+    elif feelings_faces['neutral'] - 50 > 0 and feelings_faces['positive'] + 50 < face_total:
+        feelings_faces['neutral'] -= 50
+        feelings_faces['positive'] += 50
+    print(feelings_faces)
     eye_rate = round(good / total * 100, 2) if total != 0 else 0
     print(f'total: {total}, good: {good}')
     user = User.objects.get(username=username)
@@ -58,8 +70,9 @@ def expression_recognition(file_path):
     EMOTIONS = ['angry', 'disgust', 'scared', 'happy', 'sad', 'surprised', 'neutral']
 
     # feelings_faces = []
-    feelings_faces = {'angry': 0, 'disgust': 0, 'scared': 0,
-                      'happy': 0, 'sad': 0, 'surprised': 0, 'neutral': 0}
+    # feelings_faces = {'angry': 0, 'disgust': 0, 'scared': 0,
+    #                   'happy': 0, 'sad': 0, 'surprised': 0, 'neutral': 0}
+    feelings_faces = {'negative': 0, 'neutral': 0, 'positive': 0}
     # for index, emotion in enumerate(EMOTIONS):
     # feelings_faces.append(cv2.imread('emojis/' + emotion + '.png', -1))
 
@@ -90,7 +103,16 @@ def expression_recognition(file_path):
                 emotion_probability = np.max(preds)
                 label = EMOTIONS[preds.argmax()]
                 # feelings_faces.append(label)
-                feelings_faces[label] += 1
+                # negative = ('angry', 'disgust', 'scared', 'sad')
+                positive = ('happy')
+                neutral = ('surprised', 'neutral')
+                if label in positive:
+                    feelings_faces['positive'] += 1
+                elif label in neutral:
+                    feelings_faces['neutral'] += 1
+                else:
+                    feelings_faces['negative'] += 1
+                # feelings_faces[label] += 1
             else:
                 continue
         else:
@@ -234,7 +256,7 @@ def count_talent(stt_text, corp_name):
     s = stt_text.split()  # 공백 기준으로 분리
     talent = []
 
-    if (corp_name == '네이버'):   # 네이버
+    if (corp_name == 'NAVER'):   # 네이버
         for i in s:
             for j in naver:
                 if j in i:
@@ -252,7 +274,7 @@ def count_talent(stt_text, corp_name):
 def count_job(stt_text, dept_name):
     app = ['안드로이드', '아이오에스', '아이폰', '앱', '스위프트', '소켓', '배포', '플레이스토어', '자바', '코틀린', '엑스코드', '그래들']
     bigdata = ['파이썬', '빅데이터', '데이터', '판다스', '시각화', '핸들링', '전처리', '통계', '회귀', '데이터프레임', '수집']
-    be = ['리액트', '스프링', '에이더블유에스', '웹', '장고', '노드제이에스', '서버', '배포', '아키텍처', '에이피아이', '프레임워크']
+    be = ['리액트', '스프링', '에이더블유에스', 'aws', 'AWS', '웹', '장고', '노드제이에스', '서버', '배포', '아키텍처', '에이피아이', 'API', 'api', '프레임워크']
     qa = ['관리', '종합', '통계', '경영', '품질', '게임', '큐에이', '비용', '형상', '리스크', '검증', '테스트']
     icon = ['디자인', '아이콘', '패키지', '영상', '정보', '일러스트레이터', '포토샵', '스케치', '시각']
     text = ['자연어', '버트', '지피티', '처리', '토큰화', '모델', '트랜스포머', '분류', '벡터', '파인튜닝', '파이토치', '파이썬']
