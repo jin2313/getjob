@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+
+{% block content %}
+
+{% include 'header.html' %}
+
+<div style="margin-top: 10rem; text-align: center;">
+    {% for corp in corp_list %}
+        <div class="list mx-5">
+            <div class="mt-5">
+                <h3>{{ corp.name }}</h3>
+            </div>
+            <div class="summary-box my-5">
+                <h5 class="mb-3">선택 가능 직무</h5>
+                <p>{{ corp.summary|linebreaksbr }}</p>
+            </div>
+            <div class="button-box mb-5">
+                <a class="start-btn btn rounded-pill" href="{% url 'dept' %}?corp={{ corp.name }}">회사 선택</a>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

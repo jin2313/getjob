@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+
+{% block content %}
+<style>
+    body {
+        text-align: center;
+    }
+</style>
+
+{% include 'header.html' %}
+
+<div class="account-box p-5">
+    <h2 class="mb-4" style="color: #505050;"><strong>로그인</strong></h2>
+    <form action="{% url 'accountapp:signin' %}" method="post">
+        {% csrf_token %}
+        <div style="width: 90%; margin: 0px auto;">
+            {% bootstrap_form form %}
+            <button class="submit-btn btn-lg w-100 mt-3 mb-4" type="submit">
+                <strong>로그인</strong>
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}

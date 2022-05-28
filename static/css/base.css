@@ -1,0 +1,43 @@
+body {
+    font-family: 'Gowun Dodum', sans-serif;
+    background-image: url('/static/img/back.png');
+    background-size: cover;
+}
+
+.account-box {
+    display: inline-block;
+    margin-top: 8.5rem;
+    width: 480px;
+    border-radius: 0.9rem;
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+.account-form::placeholder {
+    font-size: 0.9rem;
+}
+
+.submit-btn {
+     background-color: #b6c1dd;
+     color:white;
+     border: 0px solid black;
+     border-radius: 0.8rem;
+}
+
+.submit-btn:hover {
+    color: #505050;
+}
+
+.start-btn {
+    background-color: #b6c1dd;
+    color: white;
+    font-size: 1.2rem;
+    width: 12rem;
+}
+
+.list {
+    display: inline-block;
+    width: 350px;
+    border-radius: 0.9rem;
+    background-color: rgba(255, 255, 255, 0.3);
+    text-align: center;
+}

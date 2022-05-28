@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+
+{% block content %}
+
+{% include 'header.html' %}
+
+<div style="margin-top: 10rem; text-align: center;">
+    {% for dept in dept_list %}
+        <div class="list mx-5 mb-5">
+            <div class="mt-5">
+                <h4>{{ dept.name }}</h4>
+            </div>
+            <div class="button-box mt-4 mb-5">
+                <a class="start-btn btn rounded-pill" href="{% url 'interviewapp:question' %}?corp={{ dept.corp_name }}&dept={{ dept.name }}&question=1">직무 선택</a>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

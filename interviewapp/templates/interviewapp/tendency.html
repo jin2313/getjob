@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{% load static %}
+{% load split %}
+
+{% block content %}
+
+<style>
+    body {
+        text-align: center;
+    }
+    .table-box {
+        display: inline-block;
+        margin-top: 6.5rem;
+        background-color: rgba(255, 255, 255, 0.3);
+        border-radius: 2rem;
+    }
+    table {
+        margin: o auto;
+        text-align: left;
+        font-size: 1.1rem;
+    }
+    td {
+        padding-left: 1.2rem;
+        padding-right: 1.2rem;
+        padding-top: 0.75rem;
+        padding-bottom: 0.75rem;
+    }
+    .indicator {
+        font-size: 1.3rem;
+    }
+    .radio-btn {
+        width: 18px;
+        height: 18px;
+    }
+</style>
+
+{% for quest in question %}
+    <div class="table-container">
+        <div class="table-box">
+            <table class="mt-3 mb-3">
+                <tr>
+                    <td></td>
+                    <td class="indicator" style="width: 125px;"><b>남은 질문</b></td>
+                    <td class="indicator" style="width: 110px;"><b id="remain">10</b></td>
+                    <td class="indicator" style="width: 125px;"><b>남은 시간</b></td>
+                    <td class="indicator"><b id="timer-text"></b></td>
+                    {% for i in "x"|rjust:"6" %}
+                        <td style="text-align: center; width: 125px;"><p id="scale_{{ forloop.counter0 }}"></p></td>
+                    {% endfor %}
+                    <td></td>
+                </tr>
+                {% with quest.content|split:", " as contents %}
+                {% for content in contents %}
+                    <tr>
+                        <td></td>
+                        <td colspan="4" style="font-size: 1.1rem;">{{ content }}</td>
+                        {% for i in "x"|rjust:"6" %}
+                            <td style="text-align: center;">
+                                <input type="radio" onclick="change(name, id)" class="radio-btn">
+                            </td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+                {% endwith %}
+                <tr><td></td></tr>
+            </table>
+
+            <div class="mb-5" style="text-align: center;">
+                <button class="start-btn btn rounded-pill" id="submit-btn">제출</button>
+            </div>
+        </div>
+    </div>
+{% endfor %}
+
+<a id="redirect" href="{% url 'interviewapp:question' %}?corp={{ corp_name }}&dept={{ dept_name }}&question={{ next_id }}"></a>
+<p id="corp_name" style="display: none;">{{ corp_name }}</p>
+<p id="dept_name" style="display: none;">{{ dept_name }}</p>
+<p id="quest_id" style="display: none;">{{ quest_id }}</p>
+<p id="quest_level" style="display: none;">{{ quest_level }}</p>
+<p id="report_num" style="display: none;">{{ report_num }}</p>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script src="{% static 'js/tenden.js' %}"></script>
+
+{% endblock %}

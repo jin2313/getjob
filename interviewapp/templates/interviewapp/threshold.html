@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{% load static %}
+
+{% block content %}
+
+<style>
+    body {
+        text-align: center;
+    }
+    video {
+        width: 644px;
+        height: 484px;
+        border: 2px solid #b6c1dd;
+    }
+    .slider {
+      -webkit-appearance: none;
+      width: 600px;
+      height: 25px
+      outline: none;
+      opacity: 0.7;
+      -webkit-transition: .2s;
+      transition: opacity .2s;
+    }
+    .slider:hover {
+      opacity: 1;
+    }
+    .slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 25px;
+      height: 25px;
+      background: #a7b3dd;
+      cursor: pointer;
+    }
+    .slider::-moz-range-thumb {
+      width: 25px;
+      height: 25px;
+      background: #a7b3dd;
+      cursor: pointer;
+    }
+    .start-btn {
+        width: 7rem;
+    }
+</style>
+
+<div style="margin-top: 9rem;">
+    <h2>threshold 조절</h2>
+</div>
+<div class="video-container mt-5 mb-5">
+    <video id="video"></video>
+</div>
+
+<div class="slide-container">
+    <input type="range" min="1" max="256" value="50" class="slider form-range" id="myRange">
+    <span>&nbsp;&nbsp;&nbsp;&nbsp;Value:</span>
+    <span id="thres-value" style="font-weight: bold; color: red;">50</span><br>
+    <button class="start-btn btn rounded-pill mt-3" id="set-btn">확인</button>
+</div>
+
+<a id="redirect" href="{% url 'corp' %}"></a>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script src="{% static 'js/set_thres.js' %}"></script>
+
+{% endblock %}

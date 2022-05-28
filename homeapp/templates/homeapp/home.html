@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+
+{% block content %}
+<style>
+    a.menu {
+        text-decoration: none;
+        color: #505050;
+        font-size: 1.6rem;
+    }
+    a.menu:hover {
+        color: white;
+    }
+    .menu-box {
+        display: inline-block;
+        margin-top: 5rem;
+        text-align: center;
+        width: 350px;
+        border-radius: 0.9rem;
+        background-color: rgba(255, 255, 255, 0.3);
+    }
+    body {
+        text-align: center;
+    }
+</style>
+
+{% include 'header.html' %}
+
+<nav class="header-btn mt-5 mx-5" style="float: right;">
+    {% if not user.is_authenticated %}
+        <span class="mx-2"><a href="{% url 'accountapp:signin' %}" class="menu">로그인</a></span>
+        <span class="mx-2"><a href="{% url 'accountapp:signup' %}" class="menu">회원가입</a></span>
+    {% else %}
+<!--        <span class="mx-2">내 페이지</span>-->
+        <span class="mx-2"><a href="{% url 'interviewapp:report' %}" class="menu">면접 결과</a></span>
+        <span class="mx-2"><a href="{% url 'accountapp:signout' %}" class="menu">로그아웃</a></span>
+    {% endif %}
+</nav>
+<div style="clear: both;"></div>
+{% if not user.is_authenticated %}
+    <div class="menu-box">
+        <img class="mt-5" src="/static/img/document.png" style="width: 12rem;">
+        <div class="mt-4 mb-5">
+            <a class="start-btn btn rounded-pill disabled mt-1" href="{% url 'corp' %}" style="background-color: #A4A4A4;">면접 시작</a>
+            <p class="mt-4">로그인 시 면접을 시작할 수 있습니다</p>
+        </div>
+    </div>
+{% else %}
+    <div class="menu-box">
+        <img class="mt-5" src="/static/img/document.png" style="width: 12rem;">
+        <div class="my-5">
+            <a class="start-btn btn rounded-pill" href="{% url 'corp' %}">면접 시작</a>
+        </div>
+    </div>
+{% endif %}
+{% endblock %}

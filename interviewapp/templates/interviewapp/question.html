@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{% load static %}
+
+{% block content %}
+
+<style>
+    .interview-container {
+        margin-top: 10rem;
+        text-align: center;
+    }
+    .timer-container {
+        display: inline-block;
+        width: 400px;
+        height: 450px;
+        border-radius: 0.9rem;
+        background-color: rgba(255, 255, 255, 0.3);
+        vertical-align: top;
+    }
+    .circle {
+        display: inline-block;
+        width: 250px;
+        height: 250px;
+        line-height: 250px;
+        background-color: #b6c1dd;
+        border-radius: 9rem;
+    }
+    .video-container {
+        display: inline-block;
+        width: 604px;
+        height: 454px;
+        vertical-align: top;
+    }
+    video {
+        width: 600px;
+        height: 450px;
+        border: 2px solid #b6c1dd;
+    }
+    .start-btn {
+        width: 9rem;
+    }
+</style>
+
+{% for quest in question %}
+    <div class="interview-container">
+        <h2>{{ quest.content|linebreaksbr }}</h2>
+        <div class="timer-container mt-4 mx-4">
+            <div class="circle mt-5">
+                <p id="timer-text" style="font-size: 3.3rem; color: #505050;"></p>
+            </div>
+            <button class="start-btn btn rounded-pill mt-5 mx-2" id="video-start">시작</button>
+            <button class="start-btn btn rounded-pill mt-5 mx-2" id="video-stop" disabled="disabled" style="background-color: #A4A4A4;">정지</button>
+        </div>
+        <div class="video-container mt-4 mx-4">
+            <video autoplay muted id="video"></video>
+        </div>
+    </div>
+{% endfor %}
+
+
+<a id="home_redirect" href="{% url 'home' %}"></a>
+<a id="quest_redirect" href="{% url 'interviewapp:question' %}?corp={{ corp_name }}&dept={{ dept_name }}&question={{ next_id }}"></a>
+<p id="corp_name" style="display: none;">{{ corp_name }}</p>
+<p id="dept_name" style="display: none;">{{ dept_name }}</p>
+<p id="quest_id" style="display: none;">{{ quest_id }}</p>
+<p id="quest_level" style="display: none;">{{ quest_level }}</p>
+<p id="report_num" style="display: none;">{{ report_num }}</p>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script src="{% static 'js/video.js' %}"></script>
+
+{% endblock %}
