@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
 {% load bootstrap4 %}
 {% load static %}
+{% load to_str from tag_library %}
+{% load split from tag_library %}
+{% load zip from tag_library %}
 
 {% block content %}
 
@@ -10,23 +13,44 @@
     }
     .report-container {
         display: inline-block;
-        width: 80%;
+        width: 90%;
         background-color: rgba(255, 255, 255, 0.3);
-        border-radius: 2rem;
+        border-radius: 1rem;
+    }
+    .result-container {
+        display: inline-block;
+        width: 350px;
+        background-color: #b6c1dd;
     }
 </style>
 
 {% for report in report_list %}
     <div class="report-container my-5" style="text-align: left;">
-        <h2 class="my-4 mx-4">{{ report.0.report_num }}번 보고서</h2>
+        <h3 class="my-4 mx-4">{{ report.0.report_num }}번 면접 결과 분석</h3>
         {% for result in report %}
-            {% if result.quest_id == '1' %}
-                <h3>1번입니다</h3>
+            <p id="{{ result.report_num }}_{{ result.quest_id.quest_id }}_stt-text" style="display: none;">{{ result.result_stt }}</p>
+
+            <h4 class="mt-5 mx-5">{{ result.quest_id }}번 문항</h4>
+            {% if result.quest_id.quest_id == 1 or result.quest_id.quest_id == 6 or result.quest_id.quest_id == 7 %}
+                <div style="text-align: center;">
+                {% with title_list='답변 스크립트, 시선 추적, 표정 인식' %}
+                {% with title_list|split:", " as titles %}
+                    {% for title in titles %}
+                        <div class="result-container mt-3 mx-2" style="text-align: left;">
+                            <h4>{{ title }}</h4>
+                            <div class="print-result" id="{{ result.report_num }}_{{ result.quest_id.quest_id }}_{{ title }}"></div>
+                        </div>
+
+                    {% endfor %}
+                {% endwith %}
+                {% endwith %}
+                </div>
             {% else %}
-                <h3 class="mx-4">{{ result.quest_id }}번 문항</h3>
             {% endif %}
         {% endfor %}
     </div>
 {% endfor %}
+
+<script src="{% static 'js/report.js' %}"></script>
 
 {% endblock %}
