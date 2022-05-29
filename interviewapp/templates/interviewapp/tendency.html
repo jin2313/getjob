@@ -54,7 +54,7 @@
                 {% for content in contents %}
                     <tr>
                         <td></td>
-                        <td colspan="4" style="font-size: 1.1rem;">{{ content }}</td>
+                        <td colspan="4" class="content" style="font-size: 1.1rem;">{{ content }}</td>
                         {% for i in "x"|rjust:"6" %}
                             <td style="text-align: center;">
                                 <input type="radio" onclick="change(name, id)" class="radio-btn">

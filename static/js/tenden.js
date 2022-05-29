@@ -1,5 +1,6 @@
 let left = 10;
-let scale = ['매우 그렇다', '그렇다', '그런 편이다', '그렇지<br>않은 편이다', '그렇지 않다', '전혀<br>그렇지 않다'];
+let scale = ['전혀<br>그렇지 않다', '그렇지 않다', '그렇지<br>않은 편이다', '그런 편이다', '그렇다', '매우 그렇다'];
+//let scale = ['매우 그렇다', '그렇다', '그런 편이다', '그렇지<br>않은 편이다', '그렇지 않다', '전혀<br>그렇지 않다'];
 let count_element = new Array();
 let result_element = [];
 let time = null;
@@ -9,6 +10,7 @@ const x = document.getElementById("remain");
 const timer_text = document.getElementById("timer-text");
 const submit_btn = document.getElementById("submit-btn");
 const radio_btn = document.getElementsByClassName("radio-btn");
+const contents = document.getElementsByClassName("content");
 const redirect_btn = document.getElementById("redirect");
 
 
@@ -23,25 +25,36 @@ function Set_Attribute() {
         var q_num = (parseInt(i/6)+1) % 10 == 0? (parseInt(i/6)+1): "0" + (parseInt(i/6)+1)
         radio_btn.item(i).id = q_num + "_" + (i%6+1);
     }
+
+    for (let i = 0; i < contents.length; i++) {
+        var q_num = (i+1) % 10 == 0? i + 1: "0" + (i+1);
+        contents.item(i).id = q_num;
+    }
 }
 
 
 function change(name, id) {
+    var q_num = id.substr(0, 2);
+    var content = document.getElementById(q_num).innerText;
     if (!count_element.includes(name)) {
         count_element.push(name);
-        result_element.push(id);
+//        result_element.push(id);
+        result_element.push(q_num + "_" + id.slice(-1) + "_" + content);
         left -= 1;
         x.innerText = left;
     }
     else {
         for (let i = 0; i < result_element.length; i++) {
-            if (result_element[i].substr(0, 2) == id.substr(0, 2)) {
+            if (result_element[i].substr(5) == content) {
                 result_element.splice(i, 1);
-                result_element.push(id);
+//                result_element.push(id);
+                result_element.push(q_num + "_" + id.slice(-1) + "_" + content);
                 break;
             }
         }
     }
+    console.log(count_element);
+    console.log(result_element);
 }
 
 
@@ -137,6 +150,6 @@ submit_btn.onclick = function(event) {
 
 window.onload = function() {
     Set_Attribute();
-    timer = 60;
-    time = setInterval("Timer('tendency')", 1000);
+//    timer = 60;
+//    time = setInterval("Timer('tendency')", 1000);
 }

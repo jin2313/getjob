@@ -1,18 +1,28 @@
+let scale = ['전혀 그렇지 않다', '그렇지 않다', '그렇지 않은 편이다', '그런 편이다', '그렇다', '매우 그렇다'];
+
 const results = document.getElementsByClassName("print-result");
+const tendencies = document.getElementsByClassName("tendency-list");
 
 
 for (let i = 0; i < results.length; i++) {
     var id = results.item(i).id;
     var result_container = document.getElementById(id);
 
-    if (id.substr(4) == "답변 스크립트") {
+    if (id.substr(4) == "답변 스크립트")
         Print_Script(result_container);
-    }
-    else if (id.substr(4) == "시선 추적") {
+    else if (id.substr(4) == "시선 추적")
         Print_Eye(id.substr(0, 4), result_container);
-    }
     else if (id.substr(4) == "표정 인식")
         Print_Face(id.substr(0, 4), result_container);
+    else if (id.substr(4) == "인재상 카운트")
+        Print_Corp(result_container);
+    else if (id.substr(4) == "직무 키워드 카운트")
+        Print_Dept(result_container);
+}
+
+for (let i = 0; i < tendencies.length; i++) {
+    var answer = tendencies.item(i).id.substr(3, 4);
+    tendencies.item(i).innerText = scale[answer-1];
 }
 
 
@@ -37,6 +47,34 @@ function Print_Face(iden, result) {
     var innerhtml = '<canvas id="' + iden + 'face-bar-chart"></canvas>';
     result.innerHTML = innerhtml;
     Face_Bar_Chart(iden, face.positive, face.neutral, face.negative);
+}
+
+
+function Print_Corp(result) {
+    var corp = document.getElementById(id.substr(0, 4) + "corp-count").innerText;
+    corp = JSON.parse(corp);
+    var corp_name = Object.keys(corp)[0];
+    var innerhtml = `
+        <span>선택한 회사: {{corp_name}}</span><br>
+        <span>{{corp_count}}회</span>
+    `;
+    innerhtml = innerhtml.replace('{{corp_name}}', corp_name);
+    innerhtml = innerhtml.replace('{{corp_count}}', corp[corp_name]);
+    result.innerHTML = innerhtml;
+}
+
+
+function Print_Dept(result) {
+    var dept = document.getElementById(id.substr(0, 4) + "dept-count").innerText;
+    dept = JSON.parse(dept);
+    var dept_name = Object.keys(dept)[0];
+    var innerhtml = `
+        <span>선택한 직무: {{dept_name}}</span><br>
+        <span>{{dept_count}}회</span>
+    `;
+    innerhtml = innerhtml.replace('{{dept_name}}', dept_name);
+    innerhtml = innerhtml.replace('{{dept_count}}', dept[dept_name]);
+    result.innerHTML = innerhtml;
 }
 
 

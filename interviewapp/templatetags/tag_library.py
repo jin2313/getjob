@@ -18,6 +18,11 @@ def to_str(value):
     return str(value)
 
 
-@register.filter(name="zip")
-def zip(value1, value2):
-    return zip(value1, value2)
+@register.filter(name="start_index")
+def start_index(value, start):
+    return value[start:]
+
+
+@register.filter(name="end_index")
+def end_index(value, end):
+    return value[:end]

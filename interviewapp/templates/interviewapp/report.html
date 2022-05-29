@@ -3,7 +3,8 @@
 {% load static %}
 {% load to_str from tag_library %}
 {% load split from tag_library %}
-{% load zip from tag_library %}
+{% load start_index from tag_library %}
+{% load end_index from tag_library %}
 
 {% block content %}
 
@@ -19,9 +20,16 @@
     }
     .result-container {
         display: inline-block;
-        width: 20rem;
+        height: 300px;
         background-color: #b6c1dd;
         vertical-align: top;
+        text-align: left;
+    }
+    .tendency-container {
+        display: inline-block;
+        width: 90%;
+        background-color: #b6c1dd;
+        text-align: left;
     }
     .graph {
         width:500px;
@@ -53,16 +61,53 @@
                 {% with title_list='답변 스크립트, 시선 추적, 표정 인식' %}
                 {% with title_list|split:", " as titles %}
                     {% for title in titles %}
-                        <div class="result-container mt-3 mx-2" style="text-align: left;">
+                        <div class="result-container mt-3 mx-2" style=" width: 30%;">
                             <h4>{{ title }}</h4>
                             <div class="print-result" id="{{ result.report_num }}_{{ result.quest_id.quest_id }}_{{ title }}"></div>
                         </div>
-
                     {% endfor %}
                 {% endwith %}
                 {% endwith %}
                 </div>
-            {% else %}
+            {% elif result.quest_id.quest_id == 2 %}
+                <p id="{{ result.report_num }}_{{ result.quest_id.quest_id }}_corp-count" style="display: none;">{{ result.result_add }}</p>
+                <div style="text-align: center;">
+                {% with title_list='답변 스크립트, 시선 추적, 표정 인식, 인재상 카운트' %}
+                {% with title_list|split:", " as titles %}
+                    {% for title in titles %}
+                        <div class="result-container mt-3 mx-1" style=" width: 22.5%;">
+                            <h4>{{ title }}</h4>
+                            <div class="print-result" id="{{ result.report_num }}_{{ result.quest_id.quest_id }}_{{ title }}"></div>
+                        </div>
+                    {% endfor %}
+                {% endwith %}
+                {% endwith %}
+                </div>
+            {% elif result.quest_id.quest_id == 3 %}
+                <p id="{{ result.report_num }}_{{ result.quest_id.quest_id }}_dept-count" style="display: none;">{{ result.result_add }}</p>
+                <div style="text-align: center;">
+                {% with title_list='답변 스크립트, 시선 추적, 표정 인식, 직무 키워드 카운트' %}
+                {% with title_list|split:", " as titles %}
+                    {% for title in titles %}
+                        <div class="result-container mt-3 mx-1" style=" width: 22.5%;">
+                            <h4>{{ title }}</h4>
+                            <div class="print-result" id="{{ result.report_num }}_{{ result.quest_id.quest_id }}_{{ title }}"></div>
+                        </div>
+                    {% endfor %}
+                {% endwith %}
+                {% endwith %}
+                </div>
+            {% elif result.quest_id.quest_id == 4 or result.quest_id.quest_id == 5 %}
+                <div style="text-align: center;">
+                {% with result.result_add|split:", " as tendencies %}
+                    <div class="tendency-container mt-3">
+                        {% for tendency in tendencies %}
+                        <span>{{ tendency|start_index:5  }}</span><br>
+                        <span class="tendency-list" id="{{ tendency|end_index:4 }}"></span><br>
+                        {% endfor %}
+                    </div>
+                {% endwith %}
+                </div>
             {% endif %}
         {% endfor %}
     </div>

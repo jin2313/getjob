@@ -3,6 +3,7 @@ from celery import shared_task
 
 import json
 import cv2
+import urllib
 import imutils
 import speech_recognition as sr
 import numpy as np
@@ -36,10 +37,15 @@ def result(filename, username, quest_id, report_num, corp_name, dept_name):
     quest = Question.objects.get(quest_id=quest_id)
     if quest_id == "2":
         count = count_talent(text, corp_name)
+        count = json.dumps(count, ensure_ascii=False)
         Result.objects.create(user_id=user, report_num=report_num, quest_id=quest, result_stt=text,
                               result_eye=eye_rate, result_face=feelings_faces, result_add=count)
     elif quest_id == "3":
+        print(dept_name)
         count = count_job(text, dept_name)
+        print(count)
+        count = json.dumps(count, ensure_ascii=False)
+        print(count)
         Result.objects.create(user_id=user, report_num=report_num, quest_id=quest, result_stt=text,
                               result_eye=eye_rate, result_face=feelings_faces, result_add=count)
     else:
