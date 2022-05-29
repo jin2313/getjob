@@ -26,14 +26,13 @@
 
 {% include 'header.html' %}
 
-<nav class="header-btn mt-5 mx-5" style="float: right;">
+<nav class="header-btn mt-5 mx-4" style="float: right; width: 20rem;">
     {% if not user.is_authenticated %}
         <span class="mx-2"><a href="{% url 'accountapp:signin' %}" class="menu">로그인</a></span>
         <span class="mx-2"><a href="{% url 'accountapp:signup' %}" class="menu">회원가입</a></span>
     {% else %}
-<!--        <span class="mx-2">내 페이지</span>-->
-        <span class="mx-2"><a href="{% url 'interviewapp:report' %}" class="menu">면접 결과</a></span>
-        <span class="mx-2"><a href="{% url 'accountapp:signout' %}" class="menu">로그아웃</a></span>
+        <span class=""><a href="{% url 'interviewapp:report' %}" class="menu">면접 결과</a></span>
+        <span class="mx-4"><a href="{% url 'accountapp:signout' %}" class="menu">로그아웃</a></span>
     {% endif %}
 </nav>
 <div style="clear: both;"></div>

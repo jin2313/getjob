@@ -14,10 +14,12 @@ for (let i = 0; i < results.length; i++) {
         Print_Eye(id.substr(0, 4), result_container);
     else if (id.substr(4) == "표정 인식")
         Print_Face(id.substr(0, 4), result_container);
-    else if (id.substr(4) == "인재상 카운트")
-        Print_Corp(result_container);
-    else if (id.substr(4) == "직무 키워드 카운트")
-        Print_Dept(result_container);
+    else if (id.substr(4) == "키워드 카운트") {
+        if (id.substr(2, 2) == "2_")
+            Print_Corp(id, result_container);
+        else
+            Print_Dept(id, result_container);
+    }
 }
 
 for (let i = 0; i < tendencies.length; i++) {
@@ -28,13 +30,13 @@ for (let i = 0; i < tendencies.length; i++) {
 
 function Print_Script(result) {
     var stt_text = document.getElementById(id.substr(0, 4) + "stt-text").innerText;
-    result.innerHTML = "<span>" + stt_text + "</span>";
+    result.innerHTML = '<div class="mb-3">' + stt_text + '</div>';
 }
 
 
 function Print_Eye(iden, result) {
     var good = parseInt(document.getElementById(id.substr(0, 4) + "eye-tracking").innerText);
-    var innerhtml = '<canvas id="' + iden + 'eye-bar-chart"></canvas>';
+    var innerhtml = '<canvas id="' + iden + 'eye-bar-chart" height="80"></canvas>';
 //    `;
     result.innerHTML = innerhtml;
     Eye_Bar_Chart(iden, good);
@@ -44,19 +46,19 @@ function Print_Eye(iden, result) {
 function Print_Face(iden, result) {
     var face = document.getElementById(id.substr(0, 4) + "face-recog").innerText;
     face = JSON.parse(face);
-    var innerhtml = '<canvas id="' + iden + 'face-bar-chart"></canvas>';
+    var innerhtml = '<canvas id="' + iden + 'face-bar-chart" height="80"></canvas>';
     result.innerHTML = innerhtml;
     Face_Bar_Chart(iden, face.positive, face.neutral, face.negative);
 }
 
 
-function Print_Corp(result) {
-    var corp = document.getElementById(id.substr(0, 4) + "corp-count").innerText;
+function Print_Corp(id, result) {
+    var corp = document.getElementById(id.substr(0, 4) + "keyword-count").innerText;
     corp = JSON.parse(corp);
     var corp_name = Object.keys(corp)[0];
     var innerhtml = `
-        <span>선택한 회사: {{corp_name}}</span><br>
-        <span>{{corp_count}}회</span>
+        <div class="mt-3 mb-2">선택 회사&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;{{corp_name}}</div>
+        <div class="mb-3">카운트된 인재상 횟수&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;{{corp_count}}회</div>
     `;
     innerhtml = innerhtml.replace('{{corp_name}}', corp_name);
     innerhtml = innerhtml.replace('{{corp_count}}', corp[corp_name]);
@@ -64,13 +66,13 @@ function Print_Corp(result) {
 }
 
 
-function Print_Dept(result) {
-    var dept = document.getElementById(id.substr(0, 4) + "dept-count").innerText;
+function Print_Dept(id, result) {
+    var dept = document.getElementById(id.substr(0, 4) + "keyword-count").innerText;
     dept = JSON.parse(dept);
     var dept_name = Object.keys(dept)[0];
     var innerhtml = `
-        <span>선택한 직무: {{dept_name}}</span><br>
-        <span>{{dept_count}}회</span>
+        <div class="mt-3 mb-2">선택 직무&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;{{dept_name}}</div>
+        <div class="mb-3">카운트된 직무 관련 키워드&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;{{dept_count}}회</div>
     `;
     innerhtml = innerhtml.replace('{{dept_name}}', dept_name);
     innerhtml = innerhtml.replace('{{dept_count}}', dept[dept_name]);
@@ -95,7 +97,8 @@ function Eye_Bar_Chart(iden, good) {
                     'rgba(255,99,132,1)',
                     'rgba(54, 162, 235, 1)',
                 ],
-                borderWidth: 1
+                borderWidth: 1,
+                maxBarThickness: 40
             }]
         },
         options: {
@@ -130,7 +133,8 @@ function Face_Bar_Chart(iden, positive, neutral, negative) {
                     'rgba(54, 162, 235, 1)',
                     'rgba(54, 162, 235, 1)',
                 ],
-                borderWidth: 1
+                borderWidth: 1,
+                maxBarThickness: 40
             }]
         },
         options: {

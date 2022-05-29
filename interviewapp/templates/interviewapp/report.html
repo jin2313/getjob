@@ -11,40 +11,38 @@
 <style>
     body {
         text-align: center;
+        background-image: url('/static/img/back.png');
+        background-size: cover;
     }
     .report-container {
         display: inline-block;
-        width: 90%;
-        background-color: rgba(255, 255, 255, 0.3);
-        border-radius: 1rem;
+        width: 75%;
+        background-color: #edf0f5;
+        border: 15px solid #b6c1dd;
+        border-radius: 0.5rem;
     }
     .result-container {
         display: inline-block;
-        height: 300px;
-        background-color: #b6c1dd;
         vertical-align: top;
+        background-color: white;
+        border: 2px solid #d1d4d9;
+        border-radius: 0.3rem;
         text-align: left;
     }
     .tendency-container {
         display: inline-block;
-        width: 90%;
-        background-color: #b6c1dd;
+        width: 90.7%;
+        background-color: white;
+        border: 2px solid #d1d4d9;
+        border-radius: 0.3rem;
         text-align: left;
     }
-    .graph {
-        width:500px;
-        height: 300px;
-        border-bottom: 1px solid #ccc;
-        border-left: 1px solid #ccc;
-        margin: 20px auto;
-        position:relative;
+    .print-result {
+        font-size: 1.1rem;
     }
-    .graph-bar{
+    .tenden {
         display: inline-block;
-        position: absolute;
-        width: 30px;
-        bottom:0;
-        perspective:200px;
+        font-size: 1.1rem;
     }
 </style>
 
@@ -55,60 +53,80 @@
             <p id="{{ result.report_num }}_{{ result.quest_id.quest_id }}_stt-text" style="display: none;">{{ result.result_stt }}</p>
             <p id="{{ result.report_num }}_{{ result.quest_id.quest_id }}_eye-tracking" style="display: none;">{{ result.result_eye }}</p>
             <p id="{{ result.report_num }}_{{ result.quest_id.quest_id }}_face-recog" style="display: none;">{{ result.result_face }}</p>
-            <h4 class="mt-5 mx-5">{{ result.quest_id }}번 문항</h4>
-            {% if result.quest_id.quest_id == 1 or result.quest_id.quest_id == 6 or result.quest_id.quest_id == 7 %}
-                <div style="text-align: center;">
-                {% with title_list='답변 스크립트, 시선 추적, 표정 인식' %}
-                {% with title_list|split:", " as titles %}
-                    {% for title in titles %}
-                        <div class="result-container mt-3 mx-2" style=" width: 30%;">
-                            <h4>{{ title }}</h4>
-                            <div class="print-result" id="{{ result.report_num }}_{{ result.quest_id.quest_id }}_{{ title }}"></div>
-                        </div>
-                    {% endfor %}
-                {% endwith %}
-                {% endwith %}
-                </div>
-            {% elif result.quest_id.quest_id == 2 %}
-                <p id="{{ result.report_num }}_{{ result.quest_id.quest_id }}_corp-count" style="display: none;">{{ result.result_add }}</p>
-                <div style="text-align: center;">
-                {% with title_list='답변 스크립트, 시선 추적, 표정 인식, 인재상 카운트' %}
-                {% with title_list|split:", " as titles %}
-                    {% for title in titles %}
-                        <div class="result-container mt-3 mx-1" style=" width: 22.5%;">
-                            <h4>{{ title }}</h4>
-                            <div class="print-result" id="{{ result.report_num }}_{{ result.quest_id.quest_id }}_{{ title }}"></div>
-                        </div>
-                    {% endfor %}
-                {% endwith %}
-                {% endwith %}
-                </div>
-            {% elif result.quest_id.quest_id == 3 %}
-                <p id="{{ result.report_num }}_{{ result.quest_id.quest_id }}_dept-count" style="display: none;">{{ result.result_add }}</p>
-                <div style="text-align: center;">
-                {% with title_list='답변 스크립트, 시선 추적, 표정 인식, 직무 키워드 카운트' %}
-                {% with title_list|split:", " as titles %}
-                    {% for title in titles %}
-                        <div class="result-container mt-3 mx-1" style=" width: 22.5%;">
-                            <h4>{{ title }}</h4>
-                            <div class="print-result" id="{{ result.report_num }}_{{ result.quest_id.quest_id }}_{{ title }}"></div>
-                        </div>
-                    {% endfor %}
-                {% endwith %}
-                {% endwith %}
-                </div>
-            {% elif result.quest_id.quest_id == 4 or result.quest_id.quest_id == 5 %}
+            <p id="{{ result.report_num }}_{{ result.quest_id.quest_id }}_keyword-count" style="display: none;">{{ result.result_add }}</p>
+
+            {% if result.quest_id.level == 3 %}
+                <h4 class="mt-5 mx-5">{{ result.quest_id }}. 성향 파악</h4>
                 <div style="text-align: center;">
                 {% with result.result_add|split:", " as tendencies %}
                     <div class="tendency-container mt-3">
                         {% for tendency in tendencies %}
-                        <span>{{ tendency|start_index:5  }}</span><br>
-                        <span class="tendency-list" id="{{ tendency|end_index:4 }}"></span><br>
+                        <div>
+                            <div class="tenden mt-4 mx-5" style="width: 50%;">{{ tendency|start_index:5 }}</div>
+                            <div class="tenden mt-4 mx-3 tendency-list" style="width: 35%;" id="{{ tendency|end_index:4 }}"></div>
+                        </div>
                         {% endfor %}
+                        <div style="height: 30px"></div>
                     </div>
                 {% endwith %}
                 </div>
+
+            {% elif result.quest_id.level == 1 or result.quest_id.level == 4 %}
+                <h4 class="mt-5 mx-5">{{ result.quest_id }}. {{ result.quest_id.content }}</h4>
+                <div style="text-align: center;">
+                    <div class="result-container mt-3 mx-1" style="width: 90.7%;">
+                        <h5 class="mt-3 mx-3">답변 스크립트</h5>
+                            <hr>
+                        <div class="print-result mt-3 mx-4" id="{{ result.report_num }}_{{ result.quest_id.quest_id }}_답변 스크립트"></div>
+                    </div>
+                {% with title_list='시선 추적, 표정 인식' %}
+                {% with title_list|split:", " as titles %}
+                    {% for title in titles %}
+                        <div class="result-container mt-3 mx-1" style="width: 45%;">
+                            <h5 class="mt-3 mx-3">{{ title }}</h5>
+                            <hr>
+                            <div class="print-result mt-3 mx-4" id="{{ result.report_num }}_{{ result.quest_id.quest_id }}_{{ title }}"></div>
+                        </div>
+                    {% endfor %}
+                {% endwith %}
+                {% endwith %}
+                </div>
+                {% if result.quest_id.quest_id == 7 %}
+                    <div style="height: 50px;"></div>
+                {% endif %}
+
+            {% elif result.quest_id.level == 2 %}
+                <h4 class="mt-5 mx-5">{{ result.quest_id }}. {{ result.quest_id.content }}</h4>
+                <div style="text-align: center; display: flex; justify-content: center;">
+                    <div class="result-container mt-3 mx-1" style="width: 65%;">
+                        <h5 class="mt-3 mx-3">답변 스크립트</h5>
+                        <hr>
+                        <div class="print-result mt-3 mx-4" id="{{ result.report_num }}_{{ result.quest_id.quest_id }}_답변 스크립트"></div>
+                    </div>
+                    <div class="result-container mt-3 mx-1" style="width: 25%">
+                        <h5 class="mt-3 mx-3">키워드 카운트</h5>
+                        <hr>
+                        <div class="print-result mt-3 mx-4" id="{{ result.report_num }}_{{ result.quest_id.quest_id }}_키워드 카운트"></div>
+                    </div>
+                </div>
+                <div style="text-align: center;">
+                {% with title_list='시선 추적, 표정 인식' %}
+                {% with title_list|split:", " as titles %}
+                    {% for title in titles %}
+                        <div class="result-container mt-3 mx-1" style=" width: 45%;">
+                            <h5 class="mt-3 mx-3">{{ title }}</h5>
+                            <hr>
+                            <div class="print-result mt-3 mx-4" id="{{ result.report_num }}_{{ result.quest_id.quest_id }}_{{ title }}"></div>
+                        </div>
+                    {% endfor %}
+                {% endwith %}
+                {% endwith %}
+                </div>
+
+
+
             {% endif %}
+
         {% endfor %}
     </div>
 {% endfor %}
