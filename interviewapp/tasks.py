@@ -1,6 +1,7 @@
 from __future__ import absolute_import, unicode_literals
 from celery import shared_task
 
+import json
 import cv2
 import imutils
 import speech_recognition as sr
@@ -20,7 +21,6 @@ def result(filename, username, quest_id, report_num, corp_name, dept_name):
     feelings_faces = expression_recognition(f'media/mp4/{filename}.mp4')
     total, good = eye_tracking(f'media/mp4/{filename}.mp4')
     face_total = feelings_faces['negative'] + feelings_faces['positive'] + feelings_faces['neutral']
-    print(feelings_faces)
     if feelings_faces['neutral'] - 100 > 0 and feelings_faces['positive'] + 100 < face_total:
         feelings_faces['neutral'] -= 100
         feelings_faces['positive'] += 100
@@ -30,9 +30,8 @@ def result(filename, username, quest_id, report_num, corp_name, dept_name):
     elif feelings_faces['neutral'] - 50 > 0 and feelings_faces['positive'] + 50 < face_total:
         feelings_faces['neutral'] -= 50
         feelings_faces['positive'] += 50
-    print(feelings_faces)
+    feelings_faces = json.dumps(feelings_faces)
     eye_rate = round(good / total * 100, 2) if total != 0 else 0
-    print(f'total: {total}, good: {good}')
     user = User.objects.get(username=username)
     quest = Question.objects.get(quest_id=quest_id)
     if quest_id == "2":
@@ -72,7 +71,7 @@ def expression_recognition(file_path):
     # feelings_faces = []
     # feelings_faces = {'angry': 0, 'disgust': 0, 'scared': 0,
     #                   'happy': 0, 'sad': 0, 'surprised': 0, 'neutral': 0}
-    feelings_faces = {'negative': 0, 'neutral': 0, 'positive': 0}
+    feelings_faces = {"negative": 0, "neutral": 0, "positive": 0}
     # for index, emotion in enumerate(EMOTIONS):
     # feelings_faces.append(cv2.imread('emojis/' + emotion + '.png', -1))
 

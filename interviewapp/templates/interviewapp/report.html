@@ -19,8 +19,24 @@
     }
     .result-container {
         display: inline-block;
-        width: 350px;
+        width: 20rem;
         background-color: #b6c1dd;
+        vertical-align: top;
+    }
+    .graph {
+        width:500px;
+        height: 300px;
+        border-bottom: 1px solid #ccc;
+        border-left: 1px solid #ccc;
+        margin: 20px auto;
+        position:relative;
+    }
+    .graph-bar{
+        display: inline-block;
+        position: absolute;
+        width: 30px;
+        bottom:0;
+        perspective:200px;
     }
 </style>
 
@@ -29,7 +45,8 @@
         <h3 class="my-4 mx-4">{{ report.0.report_num }}번 면접 결과 분석</h3>
         {% for result in report %}
             <p id="{{ result.report_num }}_{{ result.quest_id.quest_id }}_stt-text" style="display: none;">{{ result.result_stt }}</p>
-
+            <p id="{{ result.report_num }}_{{ result.quest_id.quest_id }}_eye-tracking" style="display: none;">{{ result.result_eye }}</p>
+            <p id="{{ result.report_num }}_{{ result.quest_id.quest_id }}_face-recog" style="display: none;">{{ result.result_face }}</p>
             <h4 class="mt-5 mx-5">{{ result.quest_id }}번 문항</h4>
             {% if result.quest_id.quest_id == 1 or result.quest_id.quest_id == 6 or result.quest_id.quest_id == 7 %}
                 <div style="text-align: center;">
@@ -51,6 +68,7 @@
     </div>
 {% endfor %}
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.min.js"></script>
 <script src="{% static 'js/report.js' %}"></script>
 
 {% endblock %}
