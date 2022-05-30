@@ -16,7 +16,7 @@
     }
     .report-container {
         display: inline-block;
-        width: 75%;
+        width: 80%;
         background-color: #edf0f5;
         border: 15px solid #b6c1dd;
         border-radius: 0.5rem;
@@ -62,8 +62,8 @@
                     <div class="tendency-container mt-3">
                         {% for tendency in tendencies %}
                         <div>
-                            <div class="tenden mt-4 mx-5" style="width: 50%;">{{ tendency|start_index:5 }}</div>
-                            <div class="tenden mt-4 mx-3 tendency-list" style="width: 35%;" id="{{ tendency|end_index:4 }}"></div>
+                            <div class="tenden mt-4 mx-5" style="width: 60%;">o&nbsp;&nbsp;{{ tendency|start_index:5 }}</div>
+                            <div class="tenden mt-4 mx-2 tendency-list" style="width: 25%;" id="{{ tendency|end_index:4 }}"></div>
                         </div>
                         {% endfor %}
                         <div style="height: 30px"></div>

@@ -36,10 +36,11 @@ function Print_Script(result) {
 
 function Print_Eye(iden, result) {
     var good = parseInt(document.getElementById(id.substr(0, 4) + "eye-tracking").innerText);
+    var bad = good != 0? 100 - good: 0;
+    console.log(bad);
     var innerhtml = '<canvas id="' + iden + 'eye-bar-chart" height="80"></canvas>';
-//    `;
     result.innerHTML = innerhtml;
-    Eye_Bar_Chart(iden, good);
+    Eye_Bar_Chart(iden, good, bad);
 }
 
 
@@ -72,7 +73,7 @@ function Print_Dept(id, result) {
     var dept_name = Object.keys(dept)[0];
     var innerhtml = `
         <div class="mt-3 mb-2">선택 직무&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;{{dept_name}}</div>
-        <div class="mb-3">카운트된 직무 관련 키워드&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;{{dept_count}}회</div>
+        <div class="mb-3">카운트된 직무 키워드&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;{{dept_count}}회</div>
     `;
     innerhtml = innerhtml.replace('{{dept_name}}', dept_name);
     innerhtml = innerhtml.replace('{{dept_count}}', dept[dept_name]);
@@ -80,7 +81,7 @@ function Print_Dept(id, result) {
 }
 
 
-function Eye_Bar_Chart(iden, good) {
+function Eye_Bar_Chart(iden, good, bad) {
     var ctxB = document.getElementById(iden + "eye-bar-chart").getContext('2d');
     var myBarChart = new Chart(ctxB, {
         type: 'bar',
@@ -88,7 +89,7 @@ function Eye_Bar_Chart(iden, good) {
             labels: ["중앙", "외각"],
             datasets: [{
                 label: '시선 추적 결과',
-                data: [good, 100-good],
+                data: [good, bad],
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.2)',
                     'rgba(54, 162, 235, 0.2)',
